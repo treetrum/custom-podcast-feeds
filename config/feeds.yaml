@@ -4,21 +4,19 @@ defaults:
   userAgent: custom-podcast-feeds/0.1
 
 sources:
-  - id: syntax
-    url: https://feeds.simplecast.com/54nAGcIl
-  - id: practicalai
-    url: https://practicalai.fm/rss
+  - id: npr-music
+    url: https://feeds.npr.org/510019/podcast.xml
 
 outputs:
-  - id: ai-episodes
-    title: AI Episodes (Filtered)
-    description: Episodes whose titles match AI-related terms.
-    link: https://example.com/ai-episodes
-    sources: [syntax, practicalai]
+  - id: new-music-friday
+    title: New Music Friday (Filtered)
+    description: Episodes with the exact title "New Music Friday".
+    link: https://www.npr.org/music/
+    sources: [npr-music]
     match:
       mode: substring
       caseSensitive: false
-      includeAny: [ai, llm, machine learning, neural]
-      excludeAny: [rerun]
+      includeAny: ["New Music Friday"]
+      excludeAny: []
     limits:
       maxItems: 200
