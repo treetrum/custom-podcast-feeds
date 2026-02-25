@@ -31,6 +31,7 @@ describe("renderRss", () => {
         },
       ],
       new Date("2024-01-10T00:00:00Z"),
+      { artworkUrl: "https://example.com/art.jpg" },
     );
 
     expect(xml).toContain("<rss version=\"2.0\"");
@@ -38,5 +39,7 @@ describe("renderRss", () => {
     expect(xml).toContain("<item>");
     expect(xml).toContain("Episode &lt;content&gt;");
     expect(xml).toContain("itunes:duration");
+    expect(xml).toContain("<itunes:image href=\"https://example.com/art.jpg\"/>");
+    expect(xml).toContain("<image><url>https://example.com/art.jpg</url>");
   });
 });

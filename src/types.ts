@@ -68,6 +68,7 @@ export interface SourceFeed {
   title?: string;
   description?: string;
   link?: string;
+  artworkUrl?: string;
   items: SourceItem[];
 }
 

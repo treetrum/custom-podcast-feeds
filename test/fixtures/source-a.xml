@@ -4,6 +4,7 @@
     <title>Source A</title>
     <description>Source A feed</description>
     <link>https://example.com/a</link>
+    <itunes:image href="https://example.com/a-art.jpg" />
     <item>
       <title>AI News Weekly</title>
       <description>Discussing LLM updates</description>

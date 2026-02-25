@@ -94,6 +94,11 @@ function normalizeRss(source: SourceConfig, xml: string): SourceFeed {
 
   const rawItems = asArray(channel.item as Record<string, unknown> | Record<string, unknown>[] | undefined);
   const items = rawItems.map((item) => normalizeItem(source.id, item));
+  const imageNode = channel.image as Record<string, unknown> | undefined;
+  const itunesImageNode = channel["itunes:image"] as Record<string, unknown> | undefined;
+  const artworkUrl =
+    (itunesImageNode && typeof itunesImageNode["@_href"] === "string" ? itunesImageNode["@_href"] : undefined) ??
+    (imageNode ? readNodeText(imageNode.url) : undefined);
 
   return {
     sourceId: source.id,
@@ -101,6 +106,7 @@ function normalizeRss(source: SourceConfig, xml: string): SourceFeed {
     title: readNodeText(channel.title),
     description: readNodeText(channel.description),
     link: readNodeText(channel.link),
+    artworkUrl,
     items,
   };
 }

@@ -47,13 +47,30 @@ function renderItem(item: SourceItem): string {
   return `<item>${fields.join("")}</item>`;
 }
 
-export function renderRss(output: OutputConfig, items: SourceItem[], generatedAt = new Date()): string {
+interface RenderOptions {
+  artworkUrl?: string;
+}
+
+export function renderRss(
+  output: OutputConfig,
+  items: SourceItem[],
+  generatedAt = new Date(),
+  options: RenderOptions = {},
+): string {
   const channelFields: string[] = [
     `<title>${xmlEscape(output.title)}</title>`,
     `<description>${xmlEscape(output.description)}</description>`,
     `<link>${xmlEscape(output.link)}</link>`,
     `<lastBuildDate>${generatedAt.toUTCString()}</lastBuildDate>`,
   ];
+
+  if (options.artworkUrl) {
+    const escapedArtworkUrl = xmlEscape(options.artworkUrl);
+    channelFields.push(`<itunes:image href="${escapedArtworkUrl}"/>`);
+    channelFields.push(
+      `<image><url>${escapedArtworkUrl}</url><title>${xmlEscape(output.title)}</title><link>${xmlEscape(output.link)}</link></image>`,
+    );
+  }
 
   const body = items.map((item) => renderItem(item)).join("");
 

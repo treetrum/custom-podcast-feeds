@@ -4,7 +4,7 @@ import { loadConfig } from "./config";
 import { fetchSourceFeeds } from "./fetchFeeds";
 import { filterAndSortItems } from "./filterEpisodes";
 import { renderRss } from "./renderRss";
-import type { GenerateOptions, OutputConfig, SourceItem } from "./types";
+import type { GenerateOptions, OutputConfig, SourceFeed, SourceItem } from "./types";
 
 interface ParsedArgs {
   configPath: string;
@@ -65,6 +65,16 @@ function gatherItemsForOutput(output: OutputConfig, feeds: Map<string, { items: 
   return combined;
 }
 
+function pickArtworkForOutput(output: OutputConfig, feeds: Map<string, SourceFeed>): string | undefined {
+  for (const sourceId of output.sources) {
+    const sourceFeed = feeds.get(sourceId);
+    if (sourceFeed?.artworkUrl) {
+      return sourceFeed.artworkUrl;
+    }
+  }
+  return undefined;
+}
+
 export async function runGenerate(options: GenerateOptions = {}): Promise<{ writtenFiles: string[] }> {
   const configPath = options.configPath ?? "config/feeds.yaml";
   const outDir = options.outDir ?? "docs";
@@ -92,7 +102,8 @@ export async function runGenerate(options: GenerateOptions = {}): Promise<{ writ
   for (const output of config.outputs) {
     const allItems = gatherItemsForOutput(output, feeds);
     const filteredItems = filterAndSortItems(allItems, output.match, output.limits?.maxItems ?? 200);
-    const xml = renderRss(output, filteredItems, new Date());
+    const artworkUrl = pickArtworkForOutput(output, feeds);
+    const xml = renderRss(output, filteredItems, new Date(), { artworkUrl });
 
     const xmlPath = join(outDir, `${output.id}.xml`);
     const changed = await writeIfChanged(xmlPath, xml);
