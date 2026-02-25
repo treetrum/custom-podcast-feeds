@@ -1,0 +1,14 @@
+{
+  "name": "custom-podcast-feeds",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "generate": "bun run src/main.ts",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "fast-xml-parser": "^4.5.3",
+    "yaml": "^2.8.1"
+  }
+}

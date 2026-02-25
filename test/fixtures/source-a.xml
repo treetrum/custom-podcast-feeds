@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
+  <channel>
+    <title>Source A</title>
+    <description>Source A feed</description>
+    <link>https://example.com/a</link>
+    <item>
+      <title>AI News Weekly</title>
+      <description>Discussing LLM updates</description>
+      <link>https://example.com/a/1</link>
+      <guid>a1</guid>
+      <pubDate>Mon, 01 Jan 2024 12:00:00 GMT</pubDate>
+      <enclosure url="https://example.com/audio/a1.mp3" length="12345" type="audio/mpeg" />
+      <itunes:duration>3600</itunes:duration>
+    </item>
+    <item>
+      <title>General Tech Roundup</title>
+      <description>No AI this week</description>
+      <link>https://example.com/a/2</link>
+      <guid>a2</guid>
+      <pubDate>Mon, 08 Jan 2024 12:00:00 GMT</pubDate>
+    </item>
+  </channel>
+</rss>

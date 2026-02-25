@@ -1,0 +1,47 @@
+name: Regenerate Feeds
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+  push:
+    paths:
+      - "src/**"
+      - "config/**"
+      - ".github/workflows/regenerate-feeds.yml"
+      - "package.json"
+      - "bun.lock"
+
+permissions:
+  contents: write
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Generate feeds
+        run: bun run generate
+
+      - name: Commit updated feeds
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if git diff --quiet -- docs; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          git add docs
+          git commit -m "chore: regenerate podcast feeds"
+          git push

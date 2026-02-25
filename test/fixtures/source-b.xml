@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Source B</title>
+    <description>Source B feed</description>
+    <link>https://example.com/b</link>
+    <item>
+      <title>LLM Interview with Researchers</title>
+      <description>Deep dive</description>
+      <link>https://example.com/b/1</link>
+      <guid>b1</guid>
+      <pubDate>Mon, 15 Jan 2024 12:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>AI News Weekly Rerun</title>
+      <description>rerun content</description>
+      <link>https://example.com/b/2</link>
+      <guid>b2</guid>
+      <pubDate>Mon, 22 Jan 2024 12:00:00 GMT</pubDate>
+    </item>
+  </channel>
+</rss>

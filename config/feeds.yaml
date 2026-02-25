@@ -1,0 +1,24 @@
+defaults:
+  requestTimeoutMs: 20000
+  retries: 2
+  userAgent: custom-podcast-feeds/0.1
+
+sources:
+  - id: syntax
+    url: https://feeds.simplecast.com/54nAGcIl
+  - id: practicalai
+    url: https://practicalai.fm/rss
+
+outputs:
+  - id: ai-episodes
+    title: AI Episodes (Filtered)
+    description: Episodes whose titles match AI-related terms.
+    link: https://example.com/ai-episodes
+    sources: [syntax, practicalai]
+    match:
+      mode: substring
+      caseSensitive: false
+      includeAny: [ai, llm, machine learning, neural]
+      excludeAny: [rerun]
+    limits:
+      maxItems: 200
