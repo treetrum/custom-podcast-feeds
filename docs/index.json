@@ -1,4 +1,11 @@
 {
-  "generatedAt": null,
-  "outputs": []
+  "generatedAt": "2026-02-25T21:12:05.563Z",
+  "outputs": [
+    {
+      "id": "new-music-friday",
+      "title": "New Music Friday (Filtered)",
+      "description": "Episodes with the exact title \"New Music Friday\".",
+      "path": "/new-music-friday.xml"
+    }
+  ]
 }
