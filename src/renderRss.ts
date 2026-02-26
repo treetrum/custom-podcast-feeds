@@ -44,7 +44,8 @@ function renderItem(item: SourceItem): string {
     }
   }
 
-  return `<item>${fields.join("")}</item>`;
+  const inner = fields.map((field) => `      ${field}`).join("\n");
+  return `    <item>\n${inner}\n    </item>`;
 }
 
 interface RenderOptions {
@@ -74,12 +75,18 @@ export function renderRss(
     );
   }
 
-  const body = items.map((item) => renderItem(item)).join("");
+  const body = items.map((item) => renderItem(item)).join("\n");
+  const channelBodyLines = channelFields.map((field) => `    ${field}`);
+  if (body.length > 0) {
+    channelBodyLines.push(body);
+  }
 
   return [
     `<?xml version="1.0" encoding="UTF-8"?>`,
     `<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:content="http://purl.org/rss/1.0/modules/content/">`,
-    `<channel>${channelFields.join("")}${body}</channel>`,
+    `  <channel>`,
+    channelBodyLines.join("\n"),
+    `  </channel>`,
     `</rss>`,
-  ].join("");
+  ].join("\n");
 }
