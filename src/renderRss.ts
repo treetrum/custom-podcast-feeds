@@ -54,15 +54,17 @@ interface RenderOptions {
 export function renderRss(
   output: OutputConfig,
   items: SourceItem[],
-  generatedAt = new Date(),
+  generatedAt?: Date,
   options: RenderOptions = {},
 ): string {
   const channelFields: string[] = [
     `<title>${xmlEscape(output.title)}</title>`,
     `<description>${xmlEscape(output.description)}</description>`,
     `<link>${xmlEscape(output.link)}</link>`,
-    `<lastBuildDate>${generatedAt.toUTCString()}</lastBuildDate>`,
   ];
+  if (generatedAt) {
+    channelFields.push(`<lastBuildDate>${generatedAt.toUTCString()}</lastBuildDate>`);
+  }
 
   if (options.artworkUrl) {
     const escapedArtworkUrl = xmlEscape(options.artworkUrl);

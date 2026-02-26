@@ -75,6 +75,20 @@ function pickArtworkForOutput(output: OutputConfig, feeds: Map<string, SourceFee
   return undefined;
 }
 
+function deriveLastBuildDate(items: SourceItem[]): Date | undefined {
+  let newestMs = Number.NEGATIVE_INFINITY;
+  for (const item of items) {
+    if (!item.pubDate) {
+      continue;
+    }
+    const parsed = Date.parse(item.pubDate);
+    if (Number.isFinite(parsed) && parsed > newestMs) {
+      newestMs = parsed;
+    }
+  }
+  return Number.isFinite(newestMs) ? new Date(newestMs) : undefined;
+}
+
 export async function runGenerate(options: GenerateOptions = {}): Promise<{ writtenFiles: string[] }> {
   const configPath = options.configPath ?? "config/feeds.yaml";
   const outDir = options.outDir ?? "docs";
@@ -103,7 +117,8 @@ export async function runGenerate(options: GenerateOptions = {}): Promise<{ writ
     const allItems = gatherItemsForOutput(output, feeds);
     const filteredItems = filterAndSortItems(allItems, output.match, output.limits?.maxItems ?? 200);
     const artworkUrl = pickArtworkForOutput(output, feeds);
-    const xml = renderRss(output, filteredItems, new Date(), { artworkUrl });
+    const lastBuildDate = deriveLastBuildDate(filteredItems);
+    const xml = renderRss(output, filteredItems, lastBuildDate, { artworkUrl });
 
     const xmlPath = join(outDir, `${output.id}.xml`);
     const changed = await writeIfChanged(xmlPath, xml);
@@ -125,7 +140,6 @@ export async function runGenerate(options: GenerateOptions = {}): Promise<{ writ
 
   const indexPayload = JSON.stringify(
     {
-      generatedAt: new Date().toISOString(),
       outputs: indexOutputs,
     },
     null,

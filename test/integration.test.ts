@@ -65,5 +65,12 @@ describe("runGenerate integration", () => {
 
     const indexJson = await readFile(join(outDir, "index.json"), "utf8");
     expect(indexJson).toContain("filtered");
+
+    const secondResult = await runGenerate({
+      configPath,
+      outDir,
+      fetchImpl,
+    });
+    expect(secondResult.writtenFiles).toHaveLength(0);
   });
 });
