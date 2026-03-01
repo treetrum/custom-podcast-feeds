@@ -20,6 +20,7 @@ describe("renderRss", () => {
           link: "https://example.com/ep",
           guid: "guid-1",
           pubDate: "Mon, 01 Jan 2024 12:00:00 GMT",
+          artworkUrl: "https://example.com/ep-art.jpg",
           enclosure: {
             url: "https://example.com/audio.mp3",
             length: "10",
@@ -39,6 +40,7 @@ describe("renderRss", () => {
     expect(xml).toContain("<item>");
     expect(xml).toContain("Episode &lt;content&gt;");
     expect(xml).toContain("itunes:duration");
+    expect(xml).toContain("<itunes:image href=\"https://example.com/ep-art.jpg\"/>");
     expect(xml).toContain("<itunes:image href=\"https://example.com/art.jpg\"/>");
     expect(xml).toContain("<image><url>https://example.com/art.jpg</url>");
   });

@@ -41,6 +41,46 @@ function readNodeText(node: unknown): string | undefined {
   return undefined;
 }
 
+function readNodeAttribute(node: unknown, name: string): string | undefined {
+  if (!node || typeof node !== "object") {
+    return undefined;
+  }
+  const value = (node as Record<string, unknown>)[`@_${name}`];
+  return typeof value === "string" ? value : undefined;
+}
+
+function pickItemArtwork(raw: Record<string, unknown>): string | undefined {
+  const itunesImageHref = readNodeAttribute(raw["itunes:image"], "href");
+  if (itunesImageHref) {
+    return itunesImageHref;
+  }
+
+  const mediaThumbnails = asArray(raw["media:thumbnail"]);
+  for (const thumbnail of mediaThumbnails) {
+    const thumbnailUrl = readNodeAttribute(thumbnail, "url");
+    if (thumbnailUrl) {
+      return thumbnailUrl;
+    }
+  }
+
+  const mediaContents = asArray(raw["media:content"]);
+  for (const contentNode of mediaContents) {
+    const contentUrl = readNodeAttribute(contentNode, "url");
+    if (!contentUrl) {
+      continue;
+    }
+
+    const medium = readNodeAttribute(contentNode, "medium");
+    const type = readNodeAttribute(contentNode, "type");
+    if (medium?.toLowerCase() === "image" || type?.toLowerCase().startsWith("image/")) {
+      return contentUrl;
+    }
+  }
+
+  const imageNode = raw.image as Record<string, unknown> | undefined;
+  return imageNode ? readNodeText(imageNode.url) : undefined;
+}
+
 function normalizeItem(sourceId: string, raw: Record<string, unknown>): SourceItem {
   const enclosureRaw = raw.enclosure;
   let enclosure: SourceItem["enclosure"];
@@ -58,7 +98,7 @@ function normalizeItem(sourceId: string, raw: Record<string, unknown>): SourceIt
 
   const itunes: Record<string, string> = {};
   for (const [key, value] of Object.entries(raw)) {
-    if (!key.startsWith("itunes:")) {
+    if (!key.startsWith("itunes:") || key === "itunes:image") {
       continue;
     }
     const text = readNodeText(value);
@@ -78,6 +118,7 @@ function normalizeItem(sourceId: string, raw: Record<string, unknown>): SourceIt
       readNodeText(raw.published) ??
       readNodeText(raw.updated) ??
       readNodeText(raw["dc:date"]),
+    artworkUrl: pickItemArtwork(raw),
     enclosure,
     itunes: Object.keys(itunes).length > 0 ? itunes : undefined,
   };

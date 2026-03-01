@@ -11,6 +11,7 @@
       <link>https://example.com/a/1</link>
       <guid>a1</guid>
       <pubDate>Mon, 01 Jan 2024 12:00:00 GMT</pubDate>
+      <itunes:image href="https://example.com/a-ep-1.jpg" />
       <enclosure url="https://example.com/audio/a1.mp3" length="12345" type="audio/mpeg" />
       <itunes:duration>3600</itunes:duration>
     </item>

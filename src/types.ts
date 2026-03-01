@@ -57,6 +57,7 @@ export interface SourceItem {
   link?: string;
   guid?: string;
   pubDate?: string;
+  artworkUrl?: string;
   enclosure?: Enclosure;
   itunes?: Record<string, string>;
   sourceId: string;

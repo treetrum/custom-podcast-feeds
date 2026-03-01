@@ -38,6 +38,10 @@ function renderItem(item: SourceItem): string {
     );
   }
 
+  if (item.artworkUrl) {
+    fields.push(`<itunes:image href="${xmlEscape(item.artworkUrl)}"/>`);
+  }
+
   if (item.itunes) {
     for (const [key, value] of Object.entries(item.itunes)) {
       fields.push(`<${key}>${xmlEscape(value)}</${key}>`);

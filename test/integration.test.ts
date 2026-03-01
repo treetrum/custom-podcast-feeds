@@ -62,6 +62,7 @@ describe("runGenerate integration", () => {
     expect(xml).toContain("AI News Weekly");
     expect(xml).not.toContain("AI News Weekly Rerun");
     expect(xml).toContain("<itunes:image href=\"https://example.com/a-art.jpg\"/>");
+    expect(xml).toContain("<itunes:image href=\"https://example.com/a-ep-1.jpg\"/>");
 
     const indexJson = await readFile(join(outDir, "index.json"), "utf8");
     expect(indexJson).toContain("filtered");
